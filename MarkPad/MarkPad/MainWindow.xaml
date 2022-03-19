@@ -1,0 +1,66 @@
+﻿<Window x:Class="MarkPad.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:MarkPad"
+    mc:Ignorable="d"
+    Title="MarkPad" Height="500" Width="800" WindowStartupLocation="CenterScreen">
+
+<Grid Margin="10,5,5,5">
+    <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+    </Grid.RowDefinitions>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" Grid.Row="0">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New" Click="Add_Page"/>
+                <MenuItem Header="_Open" Click="Open"/>
+                <MenuItem Header="_Save" Click="Save" />
+                <MenuItem Header="_Save As" Click="Save_As" />
+                <Separator />
+                <MenuItem Header="_Exit" Click="Exit" />
+            </MenuItem>
+            <MenuItem Header="_Search">
+                <MenuItem Header="_Find" Click="Find" />
+                <MenuItem Header="_Replace" Click="Replace" />
+                <MenuItem Header="_Replace All"  Click="Replace_All"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About" Click="About"/>
+            </MenuItem>
+        </Menu>
+    </DockPanel>
+        <TextBox Grid.Row="1" x:Name="SelectedView" IsReadOnly="True" Text="{Binding ElementName=FolderView, Path=SelectedItem.FullPath}" Margin="0 0 0 5" Padding="1 1 1 1"/>
+        <TreeView Grid.Row="2" Grid.Column="1" x:Name="FolderView" ItemsSource="{Binding Items}" VerticalAlignment="Stretch"   HorizontalAlignment="Left" Width="200">
+
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                    </Style>
+                </TreeView.ItemContainerStyle>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <StackPanel Orientation="Horizontal" MouseDown="StackPanel_MouseDown">
+                            <Image Width="32" Margin="3" Source="{Binding Type, Converter={x:Static local:HeaderToImageConverter.Instance}}" />
+                            <TextBlock VerticalAlignment="Center" Text="{Binding Name}"/>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+    </TreeView>
+        <TabControl Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  Margin="200,0,0,0" Grid.Row="2" Name="tabControl">
+            <TabItem Tag="">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="0 0 8 0" VerticalAlignment="Center" Foreground="CadetBlue">Untitled note 1</TextBlock>
+                        <Button Padding="2px" BorderThickness="0" Content=" x " FontSize="15" Background="Transparent" VerticalAlignment="Top" Click="Delete_Page"></Button>
+                        <Button Padding="2px" BorderThickness="1 0 0 0" Content="+" FontSize="15" Background="Transparent" VerticalAlignment="Top" Click="Add_Page"></Button>
+                    </StackPanel>
+                </TabItem.Header>
+                <TextBox  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="" AcceptsReturn="True" AcceptsTab="True"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "358fefb8-882a-4afb-ba37-3fb334a0162d": {
+      "ProjectGuid": "358fefb8-882a-4afb-ba37-3fb334a0162d",
+      "DisplayName": "MarkPad",
+      "ColorIndex": 0
+    },
+    "6b0263d8-6c1d-41c9-8408-5821383affd9": {
+      "ProjectGuid": "6b0263d8-6c1d-41c9-8408-5821383affd9",
+      "DisplayName": "MarkPad",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
+}
