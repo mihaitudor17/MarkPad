@@ -27,7 +27,13 @@
                 <MenuItem Header="_Find" Click="Find" />
                 <MenuItem Header="_Replace" Click="Replace" />
                 <MenuItem Header="_Replace All"  Click="Replace_All"/>
-            </MenuItem>
+                <MenuItem Header="_To Uppercase"  Click="To_Upper"/>
+                <MenuItem Header="_To Lowercase"  Click="To_Lower"/>
+                <MenuItem Header="_Go to line"  Click="GoToLine"/>
+                <MenuItem Header="_Remove empty lines"  Click="Remove_empty"/>
+                <MenuItem Header="_Set Read-Only"  Click="Set_RO"/>
+                <MenuItem Header="_Unset Read-Only"  Click="Unset_RO"/>
+                </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About" Click="About"/>
             </MenuItem>

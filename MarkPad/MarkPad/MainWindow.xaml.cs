@@ -1,5 +1,6 @@
 ﻿using MarkPad.ViewModels;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
@@ -51,10 +52,10 @@ namespace MarkPad
                 tb.Margin = new Thickness { Right = 8 };
                 tb.VerticalAlignment = VerticalAlignment.Center;
                 tb.Text = System.IO.Path.GetFileName(dlg.FileName);
-                tb.Text=tb.Text.Replace(".txt", "");
+                tb.Text = tb.Text.Replace(".txt", "");
                 tb.Foreground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Black);
                 st.Children.RemoveAt(0);
-                st.Children.Insert(0,tb);
+                st.Children.Insert(0, tb);
             }
         }
         private void Save(object sender, RoutedEventArgs e)
@@ -62,7 +63,7 @@ namespace MarkPad
             TabItem tabitem = (TabItem)tabControl.SelectedItem;
             StackPanel st = (StackPanel)tabitem.Header;
             TextBlock tb = (TextBlock)st.Children[0];
-            if ((string)tabitem.Tag!="")
+            if ((string)tabitem.Tag != "")
             {
                 TextBox tb2 = new TextBox();
                 tb2 = (TextBox)tabitem.Content;
@@ -79,7 +80,7 @@ namespace MarkPad
         }
         private void Exit(object sender, RoutedEventArgs e)
         {
-            
+
             if (MessageBox.Show("Do you want to save your work?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
             {
                 System.Windows.Application.Current.Shutdown();
@@ -111,13 +112,13 @@ namespace MarkPad
 
         private void Add_Page(object sender, RoutedEventArgs e)
         {
-           TabItem item = new TabItem();
-           StackPanel stack=new StackPanel();
-           stack.Orientation=Orientation.Horizontal;
+            TabItem item = new TabItem();
+            StackPanel stack = new StackPanel();
+            stack.Orientation = Orientation.Horizontal;
             TextBlock tb = new TextBlock();
             tb.Text = pageTitle;
             tb.Margin = new Thickness { Right = 8 };
-            tb.VerticalAlignment= VerticalAlignment.Center;
+            tb.VerticalAlignment = VerticalAlignment.Center;
             tb.Foreground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.CadetBlue);
             stack.Children.Add(tb);
 
@@ -134,7 +135,7 @@ namespace MarkPad
             Button btn2 = new Button();
             btn2.Padding = new Thickness(2);
             btn2.Background = null;
-            btn2.BorderThickness = new Thickness { Left=1};
+            btn2.BorderThickness = new Thickness { Left = 1 };
             btn2.Content = "+";
             btn2.FontSize = 15;
             btn2.VerticalAlignment = VerticalAlignment.Top;
@@ -143,16 +144,16 @@ namespace MarkPad
             item.Header = stack;
 
             TextBox tb2 = new TextBox();
-            tb2.VerticalAlignment= VerticalAlignment.Stretch;
-            tb2.HorizontalAlignment= HorizontalAlignment.Stretch;
-            tb2.TextWrapping= TextWrapping.Wrap;
+            tb2.VerticalAlignment = VerticalAlignment.Stretch;
+            tb2.HorizontalAlignment = HorizontalAlignment.Stretch;
+            tb2.TextWrapping = TextWrapping.Wrap;
             tb2.Text = pageText;
             tb2.AcceptsTab = true;
             tb2.AcceptsReturn = true;
             item.Content = tb2;
 
-            if(tb.Text.Contains("Untitled note"))
-            count++;
+            if (tb.Text.Contains("Untitled note"))
+                count++;
             pageTitle = "Untitled note " + count;
             pageText = "";
             item.Tag = "";
@@ -168,7 +169,7 @@ namespace MarkPad
                     target = (FrameworkElement)target.Parent;
                 TabItem item = (TabItem)target;
                 TextBox temp = (TextBox)item.Content;
-                if(temp.Text!=""&&item.Tag=="")
+                if (temp.Text != "" && item.Tag == "")
                 {
                     if (MessageBox.Show("Do you want to save the document?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                     {
@@ -217,7 +218,7 @@ namespace MarkPad
             if (MessageBox.Show("Do you want to go to the developer's webpage?", "About", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 System.Diagnostics.Process.Start("https://github.com/mihaitudor17");
-            }    
+            }
         }
         private void Find(TextBox textBox, bool check)
         {
@@ -228,14 +229,12 @@ namespace MarkPad
                 {
                     TextBox temp = (TextBox)item.Content;
                     temp.IsInactiveSelectionHighlightEnabled = true;
-                    
+
                     bool found = temp.Text.ToLower().IndexOf(textBox.Text) >= 0;
-                    if (found)
-                        ok = 1;
                     int index = temp.Text.ToLower().IndexOf(textBox.Text);
                     int tempcount = 1;
                     do
-                    {if (found)
+                    { if (found)
                         {
                             temp.Focus();
                             temp.SelectionStart = index;
@@ -245,20 +244,22 @@ namespace MarkPad
                             index = temp.Text.ToLower().IndexOf(textBox.Text, index + 1);
                             tempcount++;
                         }
-                    } while (found && tempcount != Wcount);
+                    } while (found && tempcount < Wcount);
+                    if (!found && tempcount < Wcount)
+                        ok += 0;
+                    else
+                        ok += 1;
                     
+
                 }
-                if (ok == 1)
-                    Wcount++;
+                if(ok== 0)
+                    Wcount--;
             }
             else
             {
                 TextBox temp = (TextBox)tabControl.SelectedContent;
                 temp.IsInactiveSelectionHighlightEnabled = true;
-                int ok = 0;
                 bool found = temp.Text.ToLower().IndexOf(textBox.Text) >= 0;
-                if (found)
-                    ok = 1;
                 int index = temp.Text.ToLower().IndexOf(textBox.Text);
                 int tempcount = 1;
                 do
@@ -273,14 +274,14 @@ namespace MarkPad
                         index = temp.Text.ToLower().IndexOf(textBox.Text, index + 1);
                         tempcount++;
                     }
-                } while (found && tempcount != Wcount);
-                if (ok == 1)
-                    Wcount++;
+                } while (found && tempcount < Wcount);
+                if (!found && tempcount < Wcount)
+                    Wcount--;
             }
         }
         private void Close(object sender, RoutedEventArgs e)
         {
-            Window dialog = (Window)sender;  
+            Window dialog = (Window)sender;
             dialog.Close();
         }
         private void Find(object sender, RoutedEventArgs e)
@@ -289,46 +290,55 @@ namespace MarkPad
             dialog.Width = 300;
             dialog.Height = 150;
             dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            StackPanel sp=new StackPanel();
-            TextBlock text=new TextBlock();
+            StackPanel sp = new StackPanel();
+            TextBlock text = new TextBlock();
             text.Text = "Find: ";
-            text.Margin = new Thickness(10,0,0,0);
-            sp.Children.Add(text);  
+            text.Margin = new Thickness(10, 0, 0, 0);
+            sp.Children.Add(text);
             TextBox textBox = new TextBox();
             textBox.HorizontalAlignment = HorizontalAlignment.Stretch;
             textBox.TextWrapping = TextWrapping.Wrap;
-            textBox.Margin=   new Thickness(10);
+            textBox.Margin = new Thickness(10);
             sp.Children.Add(textBox);
             CheckBox checkBox = new CheckBox();
             checkBox.Content = "Search in all files";
-            checkBox.Margin = new Thickness(10,0,0,0);
+            checkBox.Margin = new Thickness(10, 0, 0, 0);
             sp.Children.Add(checkBox);
             StackPanel sp2 = new StackPanel();
             sp2.Orientation = Orientation.Horizontal;
             var button = new Button();
-            button.Content = " Find ";
-            button.Padding = new Thickness(10,5,10,5);
-            button.Margin= new Thickness(70,10,40,0);
+            button.Content = "  Find Next  ";
+            button.Padding = new Thickness(10, 5, 10, 5);
+            button.Margin = new Thickness(35, 10, 40, 0);
             button.HorizontalAlignment = HorizontalAlignment.Left;
             button.Click += (s, f) => {
-            textBox.TextChanged+=(S,F)=>Wcount = 1;
-            Find(textBox,(bool)checkBox.IsChecked);
-            textBox.TextChanged += (S, F) => Wcount = 1;
-            dialog.Activate();
-                };
+                textBox.TextChanged += (S, F) => Wcount = 1;
+                Wcount++;
+                Find(textBox, (bool)checkBox.IsChecked);
+
+                textBox.TextChanged += (S, F) => Wcount = 1;
+                dialog.Activate();
+            };
             sp2.Children.Add(button);
-            var button1 = new Button();
-            button1.Content = "Cancel";
-            button1.Padding = new Thickness(10, 5, 10, 5);
-            button1.Margin = new Thickness(0,10,80,0);
-            button1.HorizontalAlignment = HorizontalAlignment.Right;
-            button1.Click+=(s,f)=> Close(dialog,f);
-            sp2.Children.Add(button1);
+            var button2 = new Button();
+            button2.Content = "Find Previous";
+            button2.Padding = new Thickness(10, 5, 10, 5);
+            button2.Margin = new Thickness(0, 10, 80, 0);
+            button2.HorizontalAlignment = HorizontalAlignment.Right;
+            button2.Click += (s, f) => {
+                textBox.TextChanged += (S, F) => Wcount = 1;
+                if (Wcount > 2)
+                    Wcount--;
+                Find(textBox, (bool)checkBox.IsChecked);
+                textBox.TextChanged += (S, F) => Wcount = 1;
+                dialog.Activate();
+            };
+            sp2.Children.Add(button2);
             sp.Children.Add(sp2);
             dialog.Content = sp;
             dialog.Show();
         }
-        private void Replace(TextBox old,TextBox nou, bool check)
+        private void Replace(TextBox old, TextBox nou, bool check)
         {
             if (check)
             {
@@ -339,7 +349,7 @@ namespace MarkPad
                     if (found)
                     {
                         int index = temp.Text.ToLower().IndexOf(old.Text);
-                        temp.Text=temp.Text.Remove(index,old.Text.Length).Insert(index,nou.Text);
+                        temp.Text = temp.Text.Remove(index, old.Text.Length).Insert(index, nou.Text);
                     }
                 }
             }
@@ -347,12 +357,11 @@ namespace MarkPad
             {
                 TextBox temp = (TextBox)tabControl.SelectedContent;
                 temp.IsInactiveSelectionHighlightEnabled = true;
-                int ok = 0;
                 bool found = temp.Text.ToLower().IndexOf(old.Text) >= 0;
                 if (found)
                 {
                     int index = temp.Text.ToLower().IndexOf(old.Text);
-                    temp.Text=temp.Text.Remove(index, old.Text.Length).Insert(index, nou.Text);
+                    temp.Text = temp.Text.Remove(index, old.Text.Length).Insert(index, nou.Text);
                 }
             }
         }
@@ -372,7 +381,7 @@ namespace MarkPad
             textBox.TextWrapping = TextWrapping.Wrap;
             textBox.Margin = new Thickness(10);
             sp.Children.Add(textBox);
-            StackPanel sp3=new StackPanel();
+            StackPanel sp3 = new StackPanel();
             TextBlock text1 = new TextBlock();
             text1.Text = "With: ";
             text1.Margin = new Thickness(10, 0, 0, 0);
@@ -394,7 +403,7 @@ namespace MarkPad
             button.Padding = new Thickness(10, 5, 10, 5);
             button.Margin = new Thickness(70, 10, 40, 0);
             button.HorizontalAlignment = HorizontalAlignment.Left;
-            button.Click += (s, f) => Replace(textBox,textBox1,(bool)checkBox.IsChecked);
+            button.Click += (s, f) => Replace(textBox, textBox1, (bool)checkBox.IsChecked);
             sp2.Children.Add(button);
             var button1 = new Button();
             button1.Content = "Cancel ";
@@ -419,8 +428,8 @@ namespace MarkPad
                     while (found)
                     {
                         temp.Text = temp.Text.Remove(index, old.Text.Length).Insert(index, nou.Text);
-                        found = temp.Text.ToLower().IndexOf(old.Text,index+1) >= 0;
-                        index = temp.Text.ToLower().IndexOf(old.Text,index+1);
+                        found = temp.Text.ToLower().IndexOf(old.Text, index + 1) >= 0;
+                        index = temp.Text.ToLower().IndexOf(old.Text, index + 1);
                     }
                 }
             }
@@ -428,7 +437,6 @@ namespace MarkPad
             {
                 TextBox temp = (TextBox)tabControl.SelectedContent;
                 temp.IsInactiveSelectionHighlightEnabled = true;
-                int ok = 0;
                 bool found = temp.Text.ToLower().IndexOf(old.Text) >= 0;
                 int index = temp.Text.ToLower().IndexOf(old.Text);
                 while (found)
@@ -490,6 +498,94 @@ namespace MarkPad
             sp.Children.Add(sp2);
             dialog.Content = sp;
             dialog.Show();
+        }
+        private void To_Upper(object sender, RoutedEventArgs e)
+        {
+            TabItem item = (TabItem)tabControl.SelectedItem;
+            TextBox textBox = (TextBox)item.Content;
+            textBox.Text = textBox.SelectedText.ToUpper();
+        }
+        private void To_Lower(object sender, RoutedEventArgs e)
+        {
+            TabItem item = (TabItem)tabControl.SelectedItem;
+            TextBox textBox = (TextBox)item.Content;
+            textBox.Text = textBox.SelectedText.ToLower();
+        }
+        private void Set_RO(object sender, RoutedEventArgs e)
+        {
+            TabItem item = (TabItem)tabControl.SelectedItem;
+            TextBox textBox = (TextBox)item.Content;
+            textBox.IsReadOnly = true;
+        }
+        private void Unset_RO(object sender, RoutedEventArgs e)
+        {
+            TabItem item = (TabItem)tabControl.SelectedItem;
+            TextBox textBox = (TextBox)item.Content;
+            textBox.IsReadOnly = false;
+        }
+        private void Remove_empty(object sender, RoutedEventArgs e)
+        {
+            TabItem item = (TabItem)tabControl.SelectedItem;
+            TextBox textBox = (TextBox)item.Content;
+            textBox.Text = Regex.Replace(textBox.Text, @"^\s+$[\r\n]*", string.Empty, RegexOptions.Multiline);
+
+        }
+        private void GoToLine(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Window();
+            dialog.Width = 350;
+            dialog.Height = 150;
+            dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            StackPanel sp = new StackPanel();
+            TextBlock text = new TextBlock();
+            text.Text = "Go to line: ";
+            text.Margin = new Thickness(10, 0, 0, 0);
+            sp.Children.Add(text);
+            TextBox textBox = new TextBox();
+            textBox.HorizontalAlignment = HorizontalAlignment.Stretch;
+            textBox.TextWrapping = TextWrapping.Wrap;
+            textBox.Margin = new Thickness(10);
+            sp.Children.Add(textBox);
+            Button button=new Button();
+            button.Content = "  Go  ";
+            button.Padding = new Thickness(10, 5, 10, 5);
+            button.Margin = new Thickness(70, 10, 40, 0);
+            button.HorizontalAlignment = HorizontalAlignment.Left;
+            button.Click += (s, f) =>
+            {
+                TabItem item = (TabItem)tabControl.SelectedItem;
+                TextBox txtBox = (TextBox)item.Content;
+                string str = txtBox.Text;
+                int Ncount = 1;
+                for(int i=0; i<str.Length; i++)
+                {
+                    if(str[i] == '\n')
+                        Ncount++;
+                    int temp;
+                    int.TryParse(textBox.Text, out temp);
+                    if (temp-1 == Ncount)
+                    {
+                        
+                        txtBox.Select (i + 1,0);
+                        txtBox.ScrollToLine(temp - 1);
+                        txtBox.Focus();
+                    }
+                }
+            };
+            StackPanel sp2 = new StackPanel();
+            sp2.Orientation = Orientation.Horizontal;
+            sp2.Children.Add(button);
+            var button1 = new Button();
+            button1.Content = "Cancel ";
+            button1.Padding = new Thickness(10, 5, 10, 5);
+            button1.Margin = new Thickness(25, 10, 80, 0);
+            button1.HorizontalAlignment = HorizontalAlignment.Right;
+            button1.Click += (s, f) => Close(dialog, f);
+            sp2.Children.Add(button1);
+            sp.Children.Add(sp2);
+            dialog.Content = sp;
+            dialog.Show();
+            
         }
     }
 }
