@@ -29,10 +29,10 @@ namespace MarkPad
         private DispatcherTimer AnimationTimer = new DispatcherTimer();
 
         //BallSpeed
-        private double BeginnSpeedX = 140;
-        private double BeginnSpeedY = 220;
-        private double SpeedX = 140;
-        private double SpeedY = 220;
+        private double BeginnSpeedX = 240;
+        private double BeginnSpeedY = 340;
+        private double SpeedX = 240;
+        private double SpeedY = 340;
 
         //Player Counts
         private int PlayerLeftCount = 0;
@@ -634,12 +634,12 @@ namespace MarkPad
                 RightCount.Content = 0;
                 Gamefield.Focus();
                 Keyboard.Focus(Gamefield);
-                PlayerMovementTimer.Interval = TimeSpan.FromMilliseconds(30);
+                PlayerMovementTimer.Interval = TimeSpan.FromMilliseconds(10);
                 PlayerMovementTimer.Tick += MovePlayer;
                 PlayerMovementTimer.Start();
 
                 //AnimationTimer Initialization
-                AnimationTimer.Interval = TimeSpan.FromSeconds(0.05);
+                AnimationTimer.Interval = TimeSpan.FromSeconds(0.005);
                 AnimationTimer.Tick += Animate;
                 AnimationTimer.Start();
             }
