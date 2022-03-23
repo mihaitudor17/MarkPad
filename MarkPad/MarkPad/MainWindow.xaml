@@ -5,7 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:MarkPad"
     mc:Ignorable="d"
-    Title="MarkPad" Height="500" Width="800" WindowStartupLocation="CenterScreen">
+    Title="MarkPad" Height="500" Width="800" WindowStartupLocation="CenterScreen" KeyUp="Window_KeyUp" KeyDown="Window_KeyDown">
 
 <Grid Margin="10,5,5,5">
     <Grid.RowDefinitions>
@@ -36,6 +36,7 @@
                 </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About" Click="About"/>
+                <MenuItem Header="_Extras" Click="MenuItem_Click"></MenuItem>
             </MenuItem>
         </Menu>
     </DockPanel>
@@ -57,7 +58,7 @@
                 </TreeView.ItemTemplate>
     </TreeView>
         <TabControl Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  Margin="200,0,0,0" Grid.Row="2" Name="tabControl">
-            <TabItem Tag="">
+            <TabItem Tag="" Name="TextItem">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="0 0 8 0" VerticalAlignment="Center" Foreground="CadetBlue">Untitled note 1</TextBlock>
@@ -68,5 +69,12 @@
                 <TextBox  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="" AcceptsReturn="True" AcceptsTab="True"/>
             </TabItem>
         </TabControl>
+        <Canvas Name="Gamefield" Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Focusable="True" Visibility="Hidden" Background="Yellow">
+            <Ellipse Name="Ball" Height="20" Width="20" Fill="Red" Canvas.Left="200" Canvas.Top="150" ></Ellipse>
+            <Rectangle Name="LeftPaddle" Width="12" Height="100" Fill="Gray" Canvas.Left="0" Canvas.Top="30"></Rectangle>
+            <Rectangle Name="RightPaddle" Width="12" Height="100" Fill="Gray" Canvas.Right="0" Canvas.Top="30"/>
+            <Label Name="LeftCount" Content="0" Canvas.Left="218"></Label>
+            <Label Name="RightCount" Content="0" Canvas.Left="361"/>
+        </Canvas>
     </Grid>
 </Window>
