@@ -29,10 +29,10 @@ namespace MarkPad
         private DispatcherTimer AnimationTimer = new DispatcherTimer();
 
         //BallSpeed
-        private double BeginnSpeedX = 240;
-        private double BeginnSpeedY = 340;
-        private double SpeedX = 240;
-        private double SpeedY = 340;
+        private double BeginnSpeedX = 140;
+        private double BeginnSpeedY = 220;
+        private double SpeedX = 140;
+        private double SpeedY = 220;
 
         //Player Counts
         private int PlayerLeftCount = 0;
@@ -533,13 +533,13 @@ namespace MarkPad
         {
             TabItem item = (TabItem)tabControl.SelectedItem;
             TextBox textBox = (TextBox)item.Content;
-            textBox.Text = textBox.SelectedText.ToUpper();
+            textBox.SelectedText = textBox.SelectedText.ToUpper();
         }
         private void To_Lower(object sender, RoutedEventArgs e)
         {
             TabItem item = (TabItem)tabControl.SelectedItem;
             TextBox textBox = (TextBox)item.Content;
-            textBox.Text = textBox.SelectedText.ToLower();
+            textBox.SelectedText = textBox.SelectedText.ToLower();
         }
         private void Set_RO(object sender, RoutedEventArgs e)
         {
